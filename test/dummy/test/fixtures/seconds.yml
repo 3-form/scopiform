@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  first: one
+  name: MyString
+  date: 2020-01-18
+  number: 1
+  boolean: false
+
+two:
+  first: two
+  name: MyString
+  date: 2020-01-18
+  number: 1
+  boolean: false

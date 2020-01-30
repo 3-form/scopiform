@@ -1,0 +1,11 @@
+Style/Documentation:
+  Enabled: false
+
+Layout/LineLength:
+  Max: 140
+
+Style/TrailingCommaInHashLiteral:
+  EnforcedStyleForMultiline: comma
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
