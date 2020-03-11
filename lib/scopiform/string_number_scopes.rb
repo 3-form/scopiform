@@ -15,7 +15,7 @@ module Scopiform
 
       def setup_string_and_number_auto_scopes
         string_numbers = Helpers::STRING_TYPES + Helpers::NUMBER_TYPES
-        string_number_columns = columns.select { |column| string_numbers.include? column.type }
+        string_number_columns = safe_columns.select { |column| string_numbers.include? column.type }
         string_number_columns.each do |column|
           name = column.name
           type = column.type

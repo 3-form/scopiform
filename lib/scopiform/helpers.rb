@@ -37,12 +37,32 @@ module Scopiform
 
       def column(name)
         name = resolve_alias(name)
-        columns_hash[name.to_s]
+        safe_columns_hash[name.to_s]
       end
 
       def association(name)
         name = resolve_alias(name)
-        reflect_on_association(name)
+        association = reflect_on_association(name)
+  
+        association.klass if association.present?
+        association
+      rescue NameError
+        logger.warn "Unable to load class for association `#{name}` in model `#{self.name}`"
+        nil
+      end
+
+      protected
+
+      def safe_columns
+        columns
+      rescue ActiveRecord::StatementInvalid, Mysql::Error, Mysql2::Error
+        []
+      end
+
+      def safe_columns_hash
+        columns_hash
+      rescue ActiveRecord::StatementInvalid, Mysql::Error, Mysql2::Error
+        {}
       end
     end
   end

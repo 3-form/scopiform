@@ -14,7 +14,7 @@ module Scopiform
       private
 
       def setup_common_auto_scopes
-        columns.each do |column|
+        safe_columns.each do |column|
           name = column.name
           name_sym = name.to_sym
           type = column.type

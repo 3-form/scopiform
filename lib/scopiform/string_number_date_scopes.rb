@@ -15,7 +15,7 @@ module Scopiform
 
       def setup_string_number_and_date_auto_scopes
         string_number_dates = Helpers::STRING_TYPES + Helpers::NUMBER_TYPES + Helpers::DATE_TYPES
-        string_number_date_columns = columns.select { |column| string_number_dates.include? column.type }
+        string_number_date_columns = safe_columns.select { |column| string_number_dates.include? column.type }
         string_number_date_columns.each do |column|
           name = column.name
           name_sym = name.to_sym
