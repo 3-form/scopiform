@@ -50,6 +50,7 @@ GEM
       tzinfo (~> 1.1)
     arel (9.0.0)
     builder (3.2.3)
+    byebug (11.1.1)
     concurrent-ruby (1.1.5)
     crass (1.0.4)
     erubi (1.8.0)
@@ -120,8 +121,9 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  byebug
   scopiform!
   sqlite3
 
 BUNDLED WITH
-   2.0.1
+   2.1.4

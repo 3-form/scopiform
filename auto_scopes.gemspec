@@ -9,19 +9,10 @@ Gem::Specification.new do |spec|
   spec.version     = Scopiform::VERSION
   spec.authors     = ["jayce.pulsipher"]
   spec.email       = ["jayce.pulsipher@3-form.com"]
-  # spec.homepage    = "TODO"
-  spec.summary     = "Summary of Scopiform."
-  # spec.description = "TODO: Description of Scopiform."
+  spec.homepage    = "https://github.com/3-form/scopiform"
+  spec.summary     = "Generate scope methods to ActiveRecord classes based on columns and associations"
+  # spec.description = ""
   spec.license     = "MIT"
-
-  # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
-  # to allow pushing to a single host or delete this section to allow pushing to any host.
-  if spec.respond_to?(:metadata)
-    spec.metadata["allowed_push_host"] = "TODO: Set to 'http://mygemserver.com'"
-  else
-    raise "RubyGems 2.0 or newer is required to protect against " \
-      "public gem pushes."
-  end
 
   spec.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
 

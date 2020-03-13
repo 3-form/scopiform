@@ -34,42 +34,42 @@ module Scopiform
 
           auto_scope_add(
             name,
-            ->(value) { where(arel_column.matches("%#{ActiveRecord::Base.sanitize_sql_like(value.to_s)}%")) },
+            Proc.new { |value| where(arel_column.matches("%#{ActiveRecord::Base.sanitize_sql_like(value.to_s)}%")) },
             suffix: '_contains',
             type: type
           )
 
           auto_scope_add(
             name,
-            ->(value) { where.not(arel_column.matches("%#{ActiveRecord::Base.sanitize_sql_like(value.to_s)}%")) },
+            Proc.new { |value| where.not(arel_column.matches("%#{ActiveRecord::Base.sanitize_sql_like(value.to_s)}%")) },
             suffix: '_not_contains',
             type: type
           )
 
           auto_scope_add(
             name,
-            ->(value) { where(arel_column.matches("#{ActiveRecord::Base.sanitize_sql_like(value.to_s)}%")) },
+            Proc.new { |value| where(arel_column.matches("#{ActiveRecord::Base.sanitize_sql_like(value.to_s)}%")) },
             suffix: '_starts_with',
             type: type
           )
 
           auto_scope_add(
             name,
-            ->(value) { where.not(arel_column.matches("#{ActiveRecord::Base.sanitize_sql_like(value.to_s)}%")) },
+            Proc.new { |value| where.not(arel_column.matches("#{ActiveRecord::Base.sanitize_sql_like(value.to_s)}%")) },
             suffix: '_not_starts_with',
             type: type
           )
 
           auto_scope_add(
             name,
-            ->(value) { where(arel_column.matches("%#{ActiveRecord::Base.sanitize_sql_like(value.to_s)}")) },
+            Proc.new { |value| where(arel_column.matches("%#{ActiveRecord::Base.sanitize_sql_like(value.to_s)}")) },
             suffix: '_ends_with',
             type: type
           )
 
           auto_scope_add(
             name,
-            ->(value) { where.not(arel_column.matches("%#{ActiveRecord::Base.sanitize_sql_like(value.to_s)}")) },
+            Proc.new { |value| where.not(arel_column.matches("%#{ActiveRecord::Base.sanitize_sql_like(value.to_s)}")) },
             suffix: '_not_ends_with',
             type: type
           )

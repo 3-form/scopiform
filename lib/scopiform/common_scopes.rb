@@ -21,13 +21,13 @@ module Scopiform
 
           auto_scope_add(
             name,
-            ->(value) { where(name_sym => value) },
+            Proc.new { |value| where(name_sym => value) },
             suffix: '_is',
             argument_type: type
           )
           auto_scope_add(
             name,
-            ->(value) { where.not(name_sym => value) },
+            Proc.new { |value| where.not(name_sym => value) },
             suffix: '_not',
             argument_type: type
           )
