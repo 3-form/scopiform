@@ -16,7 +16,7 @@ module Scopiform
       end
 
       def scopiform_joins(*args, **kargs)
-        respond_to?(:left_outer_joins) ? left_outer_joins(*args, **kargs) : eager_loads(*args, **kargs)
+        respond_to?(:left_outer_joins) ? left_outer_joins(*args, **kargs) : eager_load(*args, **kargs)
       end
 
       private
@@ -40,7 +40,7 @@ module Scopiform
             if is_root
               scopiform_joins(joins).merge(applied)
             else
-              merge(applied)
+              all.merge(applied)
             end
           },
           suffix: '_is',

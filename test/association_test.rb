@@ -56,7 +56,6 @@ class AssociationTest < ActiveSupport::TestCase
     assert_equal 2, result_a.size
   end
 
-  ### Does not work.  Will work once we can switch to `left_outer_joins` instead of `eager_load`
   test 'deeper or' do
     result_a = \
       Second

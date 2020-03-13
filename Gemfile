@@ -13,3 +13,10 @@ gemspec
 
 # To use a debugger
 gem 'byebug', group: [:development, :test]
+
+gem "sqlite3", "~> 1.3.6" # TODO: Rails 5 - 1.4
+
+# TODO: Rails 5 - Not required
+gem "minitest-reporters", "~> 1.4"
+# TODO: Rails 5 - Not required
+gem "rails_or", "~> 1.1"
