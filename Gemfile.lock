@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    scopiform (0.1.0)
+    scopiform (0.1.1)
       rails (~> 4.2.7)
       rails_or (~> 1.1)
 
