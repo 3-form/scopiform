@@ -9,12 +9,9 @@ require "rails/test_help"
 # to be shown.
 Minitest.backtrace_filter = Minitest::BacktraceFilter.new
 
-# TODO: Rails 5 - Invert all comments#
+# TODO: Rails 5 - Remove comments
 # require "rails/test_unit/reporter"
 # Rails::TestUnitReporter.executable = 'bin/test'
-
-require 'minitest/reporters'
-Minitest::Reporters.use!
 
 # # Load fixtures from the engine
 # if ActiveSupport::TestCase.respond_to?(:fixture_path=)

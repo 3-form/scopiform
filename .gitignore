@@ -1,5 +1,8 @@
 .byebug_history
 .bundle/
+Gemfile.lock
+gemfiles/*.lock
+*.gem
 log/*.log
 pkg/
 test/dummy/db/*.sqlite3

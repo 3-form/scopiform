@@ -56,12 +56,14 @@ module Scopiform
       def safe_columns
         columns
       rescue ActiveRecord::StatementInvalid, Mysql::Error, Mysql2::Error
+        logger.warn "Unable to load columns for `#{name}`"
         []
       end
 
       def safe_columns_hash
         columns_hash
       rescue ActiveRecord::StatementInvalid, Mysql::Error, Mysql2::Error
+        logger.warn "Unable to load columns_hash for `#{name}`"
         {}
       end
     end
