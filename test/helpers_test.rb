@@ -20,4 +20,8 @@ class HelpersTest < ActiveSupport::TestCase
   test 'has constants' do
     assert_equal %i[string text], Scopiform::Helpers::STRING_TYPES
   end
+
+  test 'does not throw when table table does not exist' do
+    NoTable
+  end
 end

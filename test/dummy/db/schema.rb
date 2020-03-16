@@ -10,12 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_23_153243) do
+ActiveRecord::Schema.define(version: 2020_03_07_180314) do
 
   create_table "firsts", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "fourths", force: :cascade do |t|
+    t.string "name"
+    t.integer "first_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["first_id"], name: "index_fourths_on_first_id"
   end
 
   create_table "seconds", force: :cascade do |t|

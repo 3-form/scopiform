@@ -9,13 +9,14 @@ require "rails/test_help"
 # to be shown.
 Minitest.backtrace_filter = Minitest::BacktraceFilter.new
 
-require "rails/test_unit/reporter"
-Rails::TestUnitReporter.executable = 'bin/test'
+# TODO: Rails 5 - Remove comments
+# require "rails/test_unit/reporter"
+# Rails::TestUnitReporter.executable = 'bin/test'
 
-# Load fixtures from the engine
-if ActiveSupport::TestCase.respond_to?(:fixture_path=)
-  ActiveSupport::TestCase.fixture_path = File.expand_path("fixtures", __dir__)
-  ActionDispatch::IntegrationTest.fixture_path = ActiveSupport::TestCase.fixture_path
-  ActiveSupport::TestCase.file_fixture_path = ActiveSupport::TestCase.fixture_path + "/files"
-  ActiveSupport::TestCase.fixtures :all
-end
+# # Load fixtures from the engine
+# if ActiveSupport::TestCase.respond_to?(:fixture_path=)
+#   ActiveSupport::TestCase.fixture_path = File.expand_path("fixtures", __dir__)
+#   ActionDispatch::IntegrationTest.fixture_path = ActiveSupport::TestCase.fixture_path
+#   ActiveSupport::TestCase.file_fixture_path = ActiveSupport::TestCase.fixture_path + "/files"
+#   ActiveSupport::TestCase.fixtures :all
+# end

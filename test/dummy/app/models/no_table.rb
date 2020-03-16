@@ -1,4 +1,4 @@
-class First < ApplicationRecord
+class NoTable < ApplicationRecord
   include Scopiform
 
   has_many :seconds

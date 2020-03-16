@@ -14,20 +14,20 @@ module Scopiform
       private
 
       def setup_common_auto_scopes
-        columns.each do |column|
+        safe_columns.each do |column|
           name = column.name
           name_sym = name.to_sym
           type = column.type
 
           auto_scope_add(
             name,
-            ->(value) { where(name_sym => value) },
+            Proc.new { |value| where(name_sym => value) },
             suffix: '_is',
             argument_type: type
           )
           auto_scope_add(
             name,
-            ->(value) { where.not(name_sym => value) },
+            Proc.new { |value| where.not(name_sym => value) },
             suffix: '_not',
             argument_type: type
           )
