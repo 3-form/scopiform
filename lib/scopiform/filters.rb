@@ -11,8 +11,8 @@ module Scopiform
         filters_hash.keys.inject(injecting) { |out, filter_name| resolve_filter(out, filter_name, filters_hash[filter_name], joins) }
       end
 
-      def apply_orders(orders_hash, injecting = all)
-        orders_hash.keys.inject(injecting) { |out, order_name| resolve_order(out, order_name, orders_hash[order_name]) }
+      def apply_sorts(sorts_hash, injecting = all)
+        sorts_hash.keys.inject(injecting) { |out, sort_name| resolve_sort(out, sort_name, sorts_hash[sort_name]) }
       end
 
       private
@@ -31,9 +31,9 @@ module Scopiform
         out.send(filter_name, filter_argument, joins: joins)
       end
 
-      def resolve_order(out, order_name, order_argument)
-        method_name = "order_by_#{order_name}"
-        out.send(method_name, order_argument)
+      def resolve_sort(out, sort_name, sort_argument)
+        method_name = "sort_by_#{sort_name}"
+        out.send(method_name, sort_argument)
       end
     end
   end

@@ -26,23 +26,23 @@ class CommonTest < ActiveSupport::TestCase
     assert_equal @first_b, results.first
   end
 
-  test 'check order_by_ ascending' do
-    results = First.order_by_name(:asc)
+  test 'check sort_by_ ascending' do
+    results = First.sort_by_name(:asc)
     assert_equal 2, results.size
     assert_equal @first_a, results.first
     assert_equal @first_b, results.second
   end
 
-  test 'check order_by_ descending' do
-    results = First.order_by_name(:desc)
+  test 'check sort_by_ descending' do
+    results = First.sort_by_name(:desc)
     assert_equal 2, results.size
     assert_equal @first_b, results.first
     assert_equal @first_a, results.second
   end
 
-  test 'check order_by_ without arg is same as ascending' do
-    results_a = First.order_by_name
-    results_b = First.order_by_name(:asc)
+  test 'check sort_by_ without arg is same as ascending' do
+    results_a = First.sort_by_name
+    results_b = First.sort_by_name(:asc)
 
     assert_equal results_a, results_b
   end

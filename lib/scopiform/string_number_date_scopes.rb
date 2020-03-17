@@ -24,42 +24,42 @@ module Scopiform
 
           auto_scope_add(
             name,
-            Proc.new { |value| where(name_sym => value) },
+            proc { |value| where(name_sym => value) },
             suffix: '_in',
             argument_type: [type]
           )
 
           auto_scope_add(
             name,
-            Proc.new { |value| where.not(name_sym => value) },
+            proc { |value| where.not(name_sym => value) },
             suffix: '_not_in',
             argument_type: [type]
           )
 
           auto_scope_add(
             name,
-            Proc.new { |value| where(arel_column.lt(value)) },
+            proc { |value| where(arel_column.lt(value)) },
             suffix: '_lt',
             argument_type: type
           )
 
           auto_scope_add(
             name,
-            Proc.new { |value| where(arel_column.lteq(value)) },
+            proc { |value| where(arel_column.lteq(value)) },
             suffix: '_lte',
             argument_type: type
           )
 
           auto_scope_add(
             name,
-            Proc.new { |value| where(arel_column.gt(value)) },
+            proc { |value| where(arel_column.gt(value)) },
             suffix: '_gt',
             argument_type: type
           )
 
           auto_scope_add(
             name,
-            Proc.new { |value| where(arel_column.gteq(value)) },
+            proc { |value| where(arel_column.gteq(value)) },
             suffix: '_gte',
             argument_type: type
           )

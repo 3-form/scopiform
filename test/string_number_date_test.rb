@@ -13,7 +13,7 @@ class StringNumberDateTest < ActiveSupport::TestCase
     assert_respond_to Second, :number_in
     assert_respond_to Second, :date_in
 
-    refute_respond_to Second, :boolean_in
+    assert_not_respond_to Second, :boolean_in
   end
 
   test 'check _in string' do

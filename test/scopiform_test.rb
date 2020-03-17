@@ -10,7 +10,7 @@ class Scopiform::Test < ActiveSupport::TestCase
   end
 
   test 'auto scope definition' do
-    refute_empty First.auto_scopes
+    assert_not_empty First.auto_scopes
   end
 
   test 'aliases get auto scopes' do

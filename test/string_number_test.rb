@@ -11,8 +11,8 @@ class StringNumberTest < ActiveSupport::TestCase
     assert_respond_to Second, :name_contains
     assert_respond_to Second, :number_contains
 
-    refute_respond_to Second, :date_contains
-    refute_respond_to Second, :boolean_contains
+    assert_not_respond_to Second, :date_contains
+    assert_not_respond_to Second, :boolean_contains
   end
 
   test 'check _contains' do

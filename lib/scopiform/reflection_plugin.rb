@@ -1,9 +1,9 @@
 module Scopiform
   module ReflectionPlugin
-    def add_reflection(ar, name, reflection)
-      super(ar, name, reflection)
+    def add_reflection(record, name, reflection)
+      super(record, name, reflection)
 
-      ar.reflection_added(name, reflection) if ar.respond_to? :reflection_added
+      record.reflection_added(name, reflection) if record.respond_to? :reflection_added
     end
   end
 end

@@ -22,10 +22,11 @@ class AssociationTest < ActiveSupport::TestCase
 
   test 'complex or' do
     results_a = Second
-                .apply_filters(or: [
-                  { first_is: { name_is: 'hello' } },
-                  { first_is: { name_is: 'world' } }
-                ])
+                .apply_filters(or:
+                  [
+                    { first_is: { name_is: 'hello' } },
+                    { first_is: { name_is: 'world' } }
+                  ])
 
     assert_equal 2, results_a.size
   end
@@ -33,7 +34,8 @@ class AssociationTest < ActiveSupport::TestCase
   test 'extra complex or' do
     result_a = \
       Second
-        .apply_filters(or: [
+      .apply_filters(or:
+        [
           { first_is: { fourths_is: { name_is: 'poui' } } },
           { first_is: { fourths_is: { name_is: 'mnb' } } }
         ])
@@ -46,7 +48,8 @@ class AssociationTest < ActiveSupport::TestCase
   test 'unbalanced complex or' do
     result_a = \
       Second
-        .apply_filters(or: [
+      .apply_filters(or:
+        [
           { first_is: { fourths_is: { name_is: 'poui' } } },
           { first_is: { name_is: 'middle' } }
         ])
@@ -59,11 +62,13 @@ class AssociationTest < ActiveSupport::TestCase
   test 'deeper or' do
     result_a = \
       Second
-        .apply_filters(first_is: {
-          or: [
-            { fourths_is: { name_is: 'poui' } },
-            { fourths_is: { name_is: 'mnb' } }
-          ]
+      .apply_filters(first_is:
+        {
+          or:
+            [
+              { fourths_is: { name_is: 'poui' } },
+              { fourths_is: { name_is: 'mnb' } }
+            ],
         })
 
     assert_equal @second_a, result_a.first
@@ -71,8 +76,8 @@ class AssociationTest < ActiveSupport::TestCase
     assert_equal 2, result_a.size
   end
 
-  test 'check order_by_ association' do
-    results_a = Second.order_by_first(name: :desc)
+  test 'check sort_by_ association' do
+    results_a = Second.sort_by_first(name: :desc)
 
     assert_equal 3, results_a.size
     assert_equal @second_a, results_a.first

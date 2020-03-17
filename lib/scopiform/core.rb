@@ -22,11 +22,9 @@ module Scopiform
       end
 
       def auto_scope_add(attribute, block, prefix: nil, suffix: nil, **options)
-        scope_name = "#{prefix}#{attribute}#{suffix}".underscore
-        scope_name_sym = scope_name.to_sym
-        scope scope_name_sym, block
-
         scope_definition = auto_scope_add_definition(attribute, prefix: prefix, suffix: suffix, **options)
+
+        scope scope_definition.name, block
 
         aliases_for(attribute).each do |alias_name|
           auto_scope_for_alias(alias_name, scope_definition)
@@ -41,7 +39,30 @@ module Scopiform
         end
       end
 
+      def enum(definitions)
+        super(definitions)
+
+        definitions.each_key { |name| update_scope_to_enum(name) }
+      end
+
       private
+
+      def update_scope_to_enum(name)
+        scopes = auto_scopes_by_attribute(name)
+
+        scopes.each do |scope|
+          if scope.options[:type].blank?
+            argument_type = scope.options[:argument_type]
+            scope.options[:argument_type] = argument_type.is_a?(Array) ? [:string] : :string if argument_type
+            scope.options[:type] = :enum
+          end
+
+          if scope.options[:remove_for_enum]
+            singleton_class.remove_method scope.name
+            @auto_scopes.delete(scope)
+          end
+        end
+      end
 
       def auto_scope_add_definition(attribute, **options)
         definition = ScopeDefinition.new(attribute, **options)
@@ -52,10 +73,9 @@ module Scopiform
       end
 
       def auto_scope_for_alias(alias_name, scope_definition)
-        scope_name = "#{scope_definition.prefix}#{scope_definition.attribute}#{scope_definition.suffix}".underscore
-        alias_method_name = "#{scope_definition.prefix}#{alias_name}#{scope_definition.suffix}".underscore
-        singleton_class.send(:alias_method, alias_method_name.to_sym, scope_name.to_sym)
-        auto_scope_add_definition(alias_name, prefix: scope_definition.prefix, suffix: scope_definition.suffix, **scope_definition.options)
+        alias_scope_definition = scope_definition.dup
+        alias_scope_definition.attribute = alias_name
+        singleton_class.send(:alias_method, alias_scope_definition.name, scope_definition.name)
       end
     end
   end

@@ -21,24 +21,24 @@ module Scopiform
 
           auto_scope_add(
             name,
-            Proc.new { |value| where(name_sym => value) },
+            proc { |value| where(name_sym => value) },
             suffix: '_is',
             argument_type: type
           )
           auto_scope_add(
             name,
-            Proc.new { |value| where.not(name_sym => value) },
+            proc { |value| where.not(name_sym => value) },
             suffix: '_not',
             argument_type: type
           )
 
-          # Ordering
+          # Sorting
           auto_scope_add(
             name,
             ->(value = :asc) { order(name_sym => value) },
-            prefix: 'order_by_',
+            prefix: 'sort_by_',
             argument_type: :string,
-            type: :order
+            type: :sort
           )
         end
       end

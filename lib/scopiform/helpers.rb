@@ -51,6 +51,10 @@ module Scopiform
         nil
       end
 
+      def enum_attribute?(name)
+        defined_enums.include? name.to_s
+      end
+
       protected
 
       def safe_columns
