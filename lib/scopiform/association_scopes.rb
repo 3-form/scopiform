@@ -30,7 +30,7 @@ module Scopiform
       def setup_association_auto_scopes(association)
         auto_scope_add(
           association.name,
-          Proc.new { |value, joins: nil|
+          proc { |value, joins: nil|
             is_root = joins.nil?
             joins = {} if is_root
 
@@ -47,13 +47,13 @@ module Scopiform
           argument_type: :hash
         )
 
-        # Ordering
+        # Sorting
         auto_scope_add(
           association.name,
-          Proc.new { |value| scopiform_joins(association.name).merge(association.klass.apply_orders(value)) },
-          prefix: 'order_by_',
+          proc { |value| scopiform_joins(association.name).merge(association.klass.apply_sorts(value)) },
+          prefix: 'sort_by_',
           argument_type: :hash,
-          type: :order
+          type: :sort
         )
       end
     end

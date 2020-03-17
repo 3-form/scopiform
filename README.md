@@ -24,7 +24,7 @@ $ gem install scopiform
 ## Public ActiveRecord Methods
 :aliases_for
 :apply_filters
-:apply_orders
+:apply_sorts
 :association
 :attribute_aliases_inverted
 :auto_scope_add

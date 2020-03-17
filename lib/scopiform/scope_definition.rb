@@ -10,7 +10,18 @@ module Scopiform
     end
 
     def name
-      "#{prefix}#{attribute}#{suffix}".underscore
+      name_for(attribute)
+    end
+
+    def name_for(attribute_name)
+      "#{prefix}#{attribute}#{suffix}".underscore.to_sym
+    end
+
+    def dup
+      duplicate = super
+      duplicate.options = options.dup
+
+      duplicate
     end
   end
 end

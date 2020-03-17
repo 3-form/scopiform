@@ -15,7 +15,9 @@ module Scopiform
 
       def setup_string_and_number_auto_scopes
         string_numbers = Helpers::STRING_TYPES + Helpers::NUMBER_TYPES
-        string_number_columns = safe_columns.select { |column| string_numbers.include? column.type }
+        string_number_columns = safe_columns.select do |column|
+          string_numbers.include?(column.type) && !enum_attribute?(column.name)
+        end
         string_number_columns.each do |column|
           name = column.name
           type = column.type
@@ -34,44 +36,50 @@ module Scopiform
 
           auto_scope_add(
             name,
-            Proc.new { |value| where(arel_column.matches("%#{ActiveRecord::Base.sanitize_sql_like(value.to_s)}%")) },
+            proc { |value| where(arel_column.matches("%#{ActiveRecord::Base.sanitize_sql_like(value.to_s)}%")) },
             suffix: '_contains',
-            type: type
+            argument_type: type,
+            remove_for_enum: true
           )
 
           auto_scope_add(
             name,
-            Proc.new { |value| where.not(arel_column.matches("%#{ActiveRecord::Base.sanitize_sql_like(value.to_s)}%")) },
+            proc { |value| where.not(arel_column.matches("%#{ActiveRecord::Base.sanitize_sql_like(value.to_s)}%")) },
             suffix: '_not_contains',
-            type: type
+            argument_type: type,
+            remove_for_enum: true
           )
 
           auto_scope_add(
             name,
-            Proc.new { |value| where(arel_column.matches("#{ActiveRecord::Base.sanitize_sql_like(value.to_s)}%")) },
+            proc { |value| where(arel_column.matches("#{ActiveRecord::Base.sanitize_sql_like(value.to_s)}%")) },
             suffix: '_starts_with',
-            type: type
+            argument_type: type,
+            remove_for_enum: true
           )
 
           auto_scope_add(
             name,
-            Proc.new { |value| where.not(arel_column.matches("#{ActiveRecord::Base.sanitize_sql_like(value.to_s)}%")) },
+            proc { |value| where.not(arel_column.matches("#{ActiveRecord::Base.sanitize_sql_like(value.to_s)}%")) },
             suffix: '_not_starts_with',
-            type: type
+            argument_type: type,
+            remove_for_enum: true
           )
 
           auto_scope_add(
             name,
-            Proc.new { |value| where(arel_column.matches("%#{ActiveRecord::Base.sanitize_sql_like(value.to_s)}")) },
+            proc { |value| where(arel_column.matches("%#{ActiveRecord::Base.sanitize_sql_like(value.to_s)}")) },
             suffix: '_ends_with',
-            type: type
+            argument_type: type,
+            remove_for_enum: true
           )
 
           auto_scope_add(
             name,
-            Proc.new { |value| where.not(arel_column.matches("%#{ActiveRecord::Base.sanitize_sql_like(value.to_s)}")) },
+            proc { |value| where.not(arel_column.matches("%#{ActiveRecord::Base.sanitize_sql_like(value.to_s)}")) },
             suffix: '_not_ends_with',
-            type: type
+            argument_type: type,
+            remove_for_enum: true
           )
         end
       end
