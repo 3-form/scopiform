@@ -26,9 +26,12 @@ module Scopiform
           # Numeric values don't work properly with `.matches`.  Using workaround
           # https://coderwall.com/p/qtgvdq/using-arel_table-for-ilike-yes-even-with-integers
           if Helpers::NUMBER_TYPES.include? column.type
+            cast_to = 'TEXT'
+            cast_to = 'CHAR' if connection.adapter_name.downcase.starts_with? 'mysql'
+
             arel_column = Arel::Nodes::NamedFunction.new(
               'CAST',
-              [arel_column.as('TEXT')]
+              [arel_column.as(cast_to)]
             )
 
             type = :string
