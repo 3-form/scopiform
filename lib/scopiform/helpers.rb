@@ -43,7 +43,7 @@ module Scopiform
       def association(name)
         name = resolve_alias(name)
         association = reflect_on_association(name)
-  
+
         association.klass if association.present?
         association
       rescue NameError
