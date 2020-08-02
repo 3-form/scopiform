@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'active_support/concern'
+require 'scopiform/scope_context'
 
 module Scopiform
   module AssociationScopes
@@ -11,12 +12,25 @@ module Scopiform
     end
 
     module ClassMethods
-      def reflection_added(_name, reflection)
-        setup_association_auto_scopes(reflection)
+      def scopiform_association_scope(association, method, value, ctx:)
+        is_root = ctx.nil?
+        ctx = ScopeContext.from(ctx)
+        ctx.set(arel_table) if is_root || ctx.arel_table.blank?
+
+        ctx.association = association
+        ctx.build_joins
+
+        applied = ctx.association.klass.send(method, value, ctx: ScopeContext.from(ctx).set(ctx.association_arel_table))
+
+        if is_root
+          joins(ctx.joins).merge(applied)
+        else
+          all.merge(applied)
+        end
       end
 
-      def scopiform_joins(*args, **kargs)
-        respond_to?(:left_outer_joins) ? left_outer_joins(*args, **kargs) : eager_load(*args, **kargs)
+      def reflection_added(_name, reflection)
+        setup_association_auto_scopes(reflection)
       end
 
       private
@@ -30,18 +44,8 @@ module Scopiform
       def setup_association_auto_scopes(association)
         auto_scope_add(
           association.name,
-          proc { |value, joins: nil|
-            is_root = joins.nil?
-            joins = {} if is_root
-
-            joins[association.name] ||= {}
-            applied = association.klass.apply_filters(value, joins: joins[association.name])
-
-            if is_root
-              scopiform_joins(joins).merge(applied)
-            else
-              all.merge(applied)
-            end
+          proc { |value, ctx: nil|
+            scopiform_association_scope(association, :apply_filters, value, ctx: ctx)
           },
           suffix: '_is',
           argument_type: :hash
@@ -50,7 +54,9 @@ module Scopiform
         # Sorting
         auto_scope_add(
           association.name,
-          proc { |value| scopiform_joins(association.name).merge(association.klass.apply_sorts(value)) },
+          proc { |value, ctx: nil|
+            scopiform_association_scope(association, :apply_sorts, value, ctx: ctx)
+          },
           prefix: 'sort_by_',
           argument_type: :hash,
           type: :sort

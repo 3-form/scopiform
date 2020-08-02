@@ -43,7 +43,7 @@ module Scopiform
       def association(name)
         name = resolve_alias(name)
         association = reflect_on_association(name)
-  
+
         association.klass if association.present?
         association
       rescue NameError
@@ -53,6 +53,10 @@ module Scopiform
 
       def enum_attribute?(name)
         defined_enums.include? name.to_s
+      end
+
+      def scopiform_arel(ctx)
+        ctx&.arel_table || arel_table
       end
 
       protected

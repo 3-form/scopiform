@@ -18,7 +18,7 @@ module Scopiform
       end
 
       def auto_scope?(name)
-        auto_scopes.find { |scope| scope.name == name }
+        auto_scopes.find { |scope| scope.name == name }.present?
       end
 
       def auto_scope_add(attribute, block, prefix: nil, suffix: nil, **options)
@@ -58,7 +58,7 @@ module Scopiform
           end
 
           if scope.options[:remove_for_enum]
-            singleton_class.remove_method scope.name
+            singleton_class.send(:remove_method, scope.name)
             @auto_scopes.delete(scope)
           end
         end
@@ -74,7 +74,11 @@ module Scopiform
 
       def auto_scope_for_alias(alias_name, scope_definition)
         alias_scope_definition = scope_definition.dup
-        alias_scope_definition.attribute = alias_name
+        alias_scope_definition.attribute = alias_name.to_sym
+
+        @auto_scopes ||= []
+        @auto_scopes << alias_scope_definition
+
         singleton_class.send(:alias_method, alias_scope_definition.name, scope_definition.name)
       end
     end

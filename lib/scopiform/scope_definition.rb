@@ -14,7 +14,7 @@ module Scopiform
     end
 
     def name_for(attribute_name)
-      "#{prefix}#{attribute}#{suffix}".underscore.to_sym
+      "#{prefix}#{attribute_name}#{suffix}".underscore.to_sym
     end
 
     def dup

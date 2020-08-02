@@ -7,10 +7,12 @@ class AssociationTest < ActiveSupport::TestCase
     @first_c = First.create(name: 'middle')
     @second_a = Second.create(first: @first_a, name: 'abc', date: '2010-10-05', number: 5, boolean: true)
     @second_b = Second.create(first: @first_b, name: 'def', date: '2020-05-10', number: 10, boolean: false)
-    @second_c = Second.create(first: @first_c, name: 'def', date: '2020-05-10', number: 10, boolean: false)
+    @second_c = Second.create(first: @first_c, name: 'def', date: '2020-05-10', number: 15, boolean: false)
     @fourth_a = Fourth.create(first: @first_a, name: 'poui')
     @fourth_b = Fourth.create(first: @first_b, name: 'lkjh')
     @fourth_c = Fourth.create(first: @first_c, name: 'mnb')
+    @fifth_a = Fifth.create(name: 'qwer', second: @second_a, fourth: @fourth_a)
+    @sixth_a = Sixth.create(name: 'asf', second_name: 'def', second_number: 10, fifth: @fifth_a)
   end
 
   test 'check _is association' do
@@ -83,5 +85,26 @@ class AssociationTest < ActiveSupport::TestCase
     assert_equal @second_a, results_a.first
     assert_equal @second_c, results_a.second
     assert_equal @second_b, results_a.third
+  end
+
+  test 'through association' do
+    results_a = Fifth.first_is(name_is: 'world')
+
+    assert_equal 1, results_a.size
+    assert_equal @fifth_a, results_a.first
+  end
+
+  test 'deeper through association' do
+    results_a = Sixth.first_is(name_is: 'world')
+
+    assert_equal 1, results_a.size
+    assert_equal @sixth_a, results_a.first
+  end
+
+  test 'composite key association' do
+    results_a = Sixth.second_is(boolean_is: false)
+
+    assert_equal 1, results_a.size
+    assert_equal @sixth_a, results_a.first
   end
 end
