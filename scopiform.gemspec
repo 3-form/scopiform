@@ -21,4 +21,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'appraisal'
   spec.add_development_dependency 'sqlite3'
   spec.add_development_dependency 'warning'
+  spec.add_development_dependency 'composite_primary_keys'
 end

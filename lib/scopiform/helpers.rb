@@ -55,6 +55,10 @@ module Scopiform
         defined_enums.include? name.to_s
       end
 
+      def scopiform_arel(ctx)
+        ctx&.arel_table || arel_table
+      end
+
       protected
 
       def safe_columns

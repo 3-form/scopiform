@@ -20,46 +20,45 @@ module Scopiform
           name = column.name
           name_sym = name.to_sym
           type = column.type
-          arel_column = arel_table[name]
 
           auto_scope_add(
             name,
-            proc { |value| where(name_sym => value) },
+            proc { |*value, ctx: nil, **| where(scopiform_arel(ctx)[name_sym].in(value.flatten)) },
             suffix: '_in',
             argument_type: [type]
           )
 
           auto_scope_add(
             name,
-            proc { |value| where.not(name_sym => value) },
+            proc { |*value, ctx: nil, **| where.not(scopiform_arel(ctx)[name_sym].in(value.flatten)) },
             suffix: '_not_in',
             argument_type: [type]
           )
 
           auto_scope_add(
             name,
-            proc { |value| where(arel_column.lt(value)) },
+            proc { |value, ctx: nil, **| where(scopiform_arel(ctx)[name_sym].lt(value)) },
             suffix: '_lt',
             argument_type: type
           )
 
           auto_scope_add(
             name,
-            proc { |value| where(arel_column.lteq(value)) },
+            proc { |value, ctx: nil, **| where(scopiform_arel(ctx)[name_sym].lteq(value)) },
             suffix: '_lte',
             argument_type: type
           )
 
           auto_scope_add(
             name,
-            proc { |value| where(arel_column.gt(value)) },
+            proc { |value, ctx: nil, **| where(scopiform_arel(ctx)[name_sym].gt(value)) },
             suffix: '_gt',
             argument_type: type
           )
 
           auto_scope_add(
             name,
-            proc { |value| where(arel_column.gteq(value)) },
+            proc { |value, ctx: nil, **| where(scopiform_arel(ctx)[name_sym].gteq(value)) },
             suffix: '_gte',
             argument_type: type
           )

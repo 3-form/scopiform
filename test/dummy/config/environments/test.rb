@@ -12,6 +12,11 @@ Rails.application.configure do
   # preloads Rails for running tests, you may have to set it to true.
   config.eager_load = false
 
+  config.active_support.test_order = :random
+  if config.active_record.sqlite3.respond_to?(:represent_boolean_as_integer=)
+    config.active_record.sqlite3.represent_boolean_as_integer = true
+  end
+
   # Configure public file server for tests with Cache-Control for performance.
   # TODO: Rails 5 - Uncomment
   # config.public_file_server.enabled = true

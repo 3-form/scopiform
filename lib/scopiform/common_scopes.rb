@@ -21,13 +21,13 @@ module Scopiform
 
           auto_scope_add(
             name,
-            proc { |value| where(name_sym => value) },
+            proc { |value, ctx: nil, **| where(scopiform_arel(ctx)[name_sym].eq(value)) },
             suffix: '_is',
             argument_type: type
           )
           auto_scope_add(
             name,
-            proc { |value| where.not(name_sym => value) },
+            proc { |value, ctx: nil, **| where.not(scopiform_arel(ctx)[name_sym].eq(value)) },
             suffix: '_not',
             argument_type: type
           )
@@ -35,7 +35,7 @@ module Scopiform
           # Sorting
           auto_scope_add(
             name,
-            ->(value = :asc) { order(name_sym => value) },
+            proc { |value = :asc, ctx: nil, **| order(scopiform_arel(ctx)[name_sym].send(value.to_s.downcase)) },
             prefix: 'sort_by_',
             argument_type: :string,
             type: :sort
