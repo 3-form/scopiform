@@ -23,9 +23,9 @@ module Scopiform
         applied = ctx.association.klass.send(method, value, ctx: ScopeContext.from(ctx).set(ctx.association_arel_table))
 
         if is_root
-          joins(ctx.joins).merge(applied)
+          ctx.scopes.reduce(joins(ctx.joins).merge(applied)) { |chain, scope| chain.merge(scope) }
         else
-          all.merge(applied)
+          ctx.scopes.reduce(all.merge(applied)) { |chain, scope| chain.merge(scope) }
         end
       end
 

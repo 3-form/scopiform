@@ -8,6 +8,8 @@ module Scopiform
     extend ActiveSupport::Concern
 
     module ClassMethods
+      attr_accessor :scopiform_ctx
+
       def auto_scopes
         @auto_scopes || []
       end
