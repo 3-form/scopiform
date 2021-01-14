@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'active_support/concern'
+require 'scopiform/utilities'
 
 module Scopiform
   module StringNumberScopes
@@ -12,14 +13,6 @@ module Scopiform
 
     module ClassMethods
       private
-
-      def cast_to_text(arel_column)
-        cast_to = connection.adapter_name.downcase.starts_with?('mysql') ? 'CHAR' : 'TEXT'
-        Arel::Nodes::NamedFunction.new(
-          'CAST',
-          [arel_column.as(cast_to)]
-        )
-      end
 
       def setup_string_and_number_auto_scopes
         string_numbers = Helpers::STRING_TYPES + Helpers::NUMBER_TYPES
@@ -42,7 +35,7 @@ module Scopiform
             name,
             proc { |value, ctx: nil, **|
               arel_column = scopiform_arel(ctx)[name]
-              arel_column = cast_to_text(arel_column) if cast
+              arel_column = Utilities.cast_to_text(arel_column, connection) if cast
               where(arel_column.matches("%#{ActiveRecord::Base.sanitize_sql_like(value.to_s)}%"))
             },
             suffix: '_contains',
@@ -54,7 +47,7 @@ module Scopiform
             name,
             proc { |value, ctx: nil, **|
               arel_column = scopiform_arel(ctx)[name]
-              arel_column = cast_to_text(arel_column) if cast
+              arel_column = Utilities.cast_to_text(arel_column, connection) if cast
               where.not(arel_column.matches("%#{ActiveRecord::Base.sanitize_sql_like(value.to_s)}%"))
             },
             suffix: '_not_contains',
@@ -66,7 +59,7 @@ module Scopiform
             name,
             proc { |value, ctx: nil, **|
               arel_column = scopiform_arel(ctx)[name]
-              arel_column = cast_to_text(arel_column) if cast
+              arel_column = Utilities.cast_to_text(arel_column, connection) if cast
               where(arel_column.matches("#{ActiveRecord::Base.sanitize_sql_like(value.to_s)}%"))
             },
             suffix: '_starts_with',
@@ -78,7 +71,7 @@ module Scopiform
             name,
             proc { |value, ctx: nil, **|
               arel_column = scopiform_arel(ctx)[name]
-              arel_column = cast_to_text(arel_column) if cast
+              arel_column = Utilities.cast_to_text(arel_column, connection) if cast
               where.not(arel_column.matches("#{ActiveRecord::Base.sanitize_sql_like(value.to_s)}%"))
             },
             suffix: '_not_starts_with',
@@ -90,7 +83,7 @@ module Scopiform
             name,
             proc { |value, ctx: nil, **|
               arel_column = scopiform_arel(ctx)[name]
-              arel_column = cast_to_text(arel_column) if cast
+              arel_column = Utilities.cast_to_text(arel_column, connection) if cast
               where(arel_column.matches("%#{ActiveRecord::Base.sanitize_sql_like(value.to_s)}"))
             },
             suffix: '_ends_with',
@@ -102,7 +95,7 @@ module Scopiform
             name,
             proc { |value, ctx: nil, **|
               arel_column = scopiform_arel(ctx)[name]
-              arel_column = cast_to_text(arel_column) if cast
+              arel_column = Utilities.cast_to_text(arel_column, connection) if cast
               where.not(arel_column.matches("%#{ActiveRecord::Base.sanitize_sql_like(value.to_s)}"))
             },
             suffix: '_not_ends_with',
