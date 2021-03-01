@@ -19,7 +19,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'activerecord', '>= 4.2.7'
 
   spec.add_development_dependency 'appraisal'
+  spec.add_development_dependency 'composite_primary_keys'
   spec.add_development_dependency 'sqlite3'
   spec.add_development_dependency 'warning'
-  spec.add_development_dependency 'composite_primary_keys'
 end
