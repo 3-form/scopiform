@@ -26,5 +26,9 @@ module Scopiform
         ctx.scopes.reduce(active_record.all.merge(applied)) { |chain, scope| chain.merge(scope) }
       end
     end
+
+    def self.truthy_hash(hash)
+      hash.values.find { |value| value.is_a?(Hash) ? truthy_hash(value) : value.present? }
+    end
   end
 end

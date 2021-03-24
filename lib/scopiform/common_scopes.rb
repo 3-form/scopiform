@@ -40,6 +40,15 @@ module Scopiform
             argument_type: :string,
             type: :sort
           )
+
+          # Grouping
+          auto_scope_add(
+            name,
+            proc { |value = true, ctx: nil, **| group(scopiform_arel(ctx)[name_sym]) if value },
+            prefix: 'group_by_',
+            argument_type: :boolean,
+            type: :group
+          )
         end
       end
     end

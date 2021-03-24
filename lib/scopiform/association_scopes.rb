@@ -44,6 +44,19 @@ module Scopiform
           argument_type: :hash,
           type: :sort
         )
+
+        # Grouping
+        auto_scope_add(
+          association.name,
+          proc { |value, ctx: nil|
+            next all unless Utilities.truthy_hash(value)
+
+            Utilities.association_scope(self, association, :apply_groupings, value, ctx: ctx)
+          },
+          prefix: 'group_by_',
+          argument_type: :hash,
+          type: :group
+        )
       end
     end
   end

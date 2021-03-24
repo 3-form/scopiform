@@ -16,6 +16,10 @@ module Scopiform
         sorts_hash.keys.inject(injecting) { |out, sort_name| resolve_sort(out, sort_name, sorts_hash[sort_name], ctx: ctx) }
       end
 
+      def apply_groupings(groupings_hash, injecting = all, ctx: nil)
+        groupings_hash.keys.inject(injecting) { |out, grouping_name| resolve_grouping(out, grouping_name, groupings_hash[grouping_name], ctx: ctx) }
+      end
+
       private
 
       def resolve_filter(out, filter_name, filter_argument, ctx:)
@@ -36,6 +40,11 @@ module Scopiform
       def resolve_sort(out, sort_name, sort_argument, ctx:)
         method_name = "sort_by_#{sort_name}"
         out.send(method_name, sort_argument, ctx: ctx)
+      end
+
+      def resolve_grouping(out, group_name, group_argument, ctx:)
+        method_name = "group_by_#{group_name}"
+        out.send(method_name, group_argument, ctx: ctx)
       end
     end
   end
