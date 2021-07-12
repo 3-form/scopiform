@@ -23,17 +23,21 @@ module Scopiform
       private
 
       def resolve_filter(out, filter_name, filter_argument, ctx:)
-        if filter_name.to_s.casecmp('OR').zero?
+        is_or = filter_name.to_s.casecmp?('OR')
+        is_and = filter_name.to_s.casecmp?('AND')
+        if is_or || is_and
           ctx ||= ScopeContext.new
           ctx.joins = []
+          chain_method = is_or ? :or : :merge
 
           return (
             filter_argument
-              .map { |or_filters_hash| apply_filters(or_filters_hash, injecting: out, ctx: ctx) }
+              .map { |filter_hash| apply_filters(filter_hash, injecting: out, ctx: ctx) }
               .map { |a| a.joins(ctx.joins) }
-              .inject { |chain, applied| chain.or(applied) }
+              .inject { |chain, applied| chain.public_send(chain_method, applied) }
           )
         end
+
         out.send(filter_name, filter_argument, ctx: ctx)
       end
 
