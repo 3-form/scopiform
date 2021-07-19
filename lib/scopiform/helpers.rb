@@ -44,7 +44,7 @@ module Scopiform
         name = resolve_alias(name)
         association = reflect_on_association(name)
 
-        association.klass if association.present?
+        association.klass if association.present? && !association.polymorphic?
         association
       rescue NameError
         logger.warn "Unable to load class for association `#{name}` in model `#{self.name}`"
