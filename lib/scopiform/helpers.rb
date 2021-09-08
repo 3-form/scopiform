@@ -62,17 +62,26 @@ module Scopiform
       protected
 
       def safe_columns
-        columns
-      rescue ActiveRecord::StatementInvalid
+        @safe_columns ||= columns
+      rescue *safe_column_rescue_errors
         logger.warn "Unable to load columns for `#{name}`"
-        []
+        @safe_columns = []
       end
 
       def safe_columns_hash
-        columns_hash
-      rescue ActiveRecord::StatementInvalid
+        @safe_columns_hash ||= columns_hash
+      rescue *safe_column_rescue_errors
         logger.warn "Unable to load columns_hash for `#{name}`"
-        {}
+        @safe_columns_hash = {}
+      end
+
+      private
+
+      def safe_column_rescue_errors
+        [
+          ActiveRecord::StatementInvalid,
+          Object.const_defined?('TinyTds') ? TinyTds::Error : nil,
+        ]
       end
     end
   end
