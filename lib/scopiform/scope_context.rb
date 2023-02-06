@@ -1,6 +1,6 @@
 module Scopiform
   class ScopeContext
-    attr_accessor :association, :arel_table, :association_arel_table, :joins, :ancestors, :scopes
+    attr_accessor :association, :arel_table, :association_arel_table, :joins, :ancestors, :scopes, :has_manys
 
     def self.from(ctx)
       created = new
@@ -20,6 +20,7 @@ module Scopiform
       @joins = []
       @ancestors = []
       @scopes = []
+      @has_manys = []
     end
 
     def set(arel_table)
@@ -33,6 +34,10 @@ module Scopiform
         if association.through_reflection
           source_reflection_name = association.source_reflection_name
           self.association = association.through_reflection
+        end
+
+        unless association.has_one? || association.belongs_to?
+          has_manys << association.name
         end
 
         ancestors << association.name.to_s.pluralize
