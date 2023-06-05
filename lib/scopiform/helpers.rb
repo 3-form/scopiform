@@ -6,7 +6,7 @@ module Scopiform
   module Helpers
     extend ActiveSupport::Concern
 
-    STRING_TYPES = %i[string text].freeze
+    STRING_TYPES = %i[string text varchar].freeze
     NUMBER_TYPES = %i[integer float decimal].freeze
     DATE_TYPES = %i[date time datetime timestamp].freeze
 
@@ -63,16 +63,16 @@ module Scopiform
 
       def safe_columns
         @safe_columns ||= columns
-      rescue *safe_column_rescue_errors
-        logger.warn "Unable to load columns for `#{name}`"
-        @safe_columns = []
+      # rescue *safe_column_rescue_errors
+      #   logger.warn "Unable to load columns for `#{name}`"
+      #   @safe_columns = []
       end
 
       def safe_columns_hash
         @safe_columns_hash ||= columns_hash
-      rescue *safe_column_rescue_errors
-        logger.warn "Unable to load columns_hash for `#{name}`"
-        @safe_columns_hash = {}
+      # rescue *safe_column_rescue_errors
+      #   logger.warn "Unable to load columns_hash for `#{name}`"
+      #   @safe_columns_hash = {}
       end
 
       private
