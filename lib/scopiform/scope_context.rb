@@ -67,10 +67,8 @@ module Scopiform
     private
 
     def conditions
-      # Rails 4 join_keys has arity of 1, expecting a klass as an argument
-      keys = association.method(:join_keys).arity == 1 ? association.join_keys(association.klass) : association.join_keys
-      [*keys.foreign_key]
-        .zip([*keys.key])
+      [*association.join_foreign_key]
+        .zip([*association.join_primary_key])
         .map { |foreign, primary| arel_table[foreign].eq(association_arel_table[primary]) }
         .reduce { |acc, cond| acc.and(cond) }
     end
