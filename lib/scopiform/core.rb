@@ -41,10 +41,10 @@ module Scopiform
         end
       end
 
-      def enum(key, definitions, **args)
-        super(key, definitions, **args)
+      def enum(name, values, **args)
+        super(name, values, **args)
 
-        definitions.each_key { |name| update_scope_to_enum(name) }
+        update_scope_to_enum(name)
       end
 
       private
